@@ -1,0 +1,43 @@
+####### PARAMETROS GENERALES ############
+
+fs: 44100 # sample rate
+
+
+####### PARAMETROS DE COMPENSACION #######
+
+ncomp: 512 # Numero de puntos para interpolar filtro
+
+####### PARAMETROS DE GRABACION ##########
+
+duration: 60 # tiempo de grabacion en segundos
+delay: 0 # Tiempo entre una grabacion y otra, siempre y cuando sea mayor que el tiempo minimo que le toma procesar
+save_audio: True # Si guarda el audio en formato WAV
+cantAudios: 60 # Guardandolos en WAV, deberian ser 10.09 MB por minuto grabado aprox.
+
+
+####### PARAMETROS DE BANDAS MEL ##########
+
+calcMel: True # Si se desea calcular Mel
+nfilt: 60 # Nro de bandas mel
+pre_enf: True
+alpha: 0.97     # coeficiente de filtro pre-enfasis
+f_size: 0.025    # tamaño de ventana en ms
+f_stride: 0.0125 # cada cuanto comienza una ventana nueva
+ventana: 'hann' # tipo de ventana a usar, ver get_window() de scipy
+normMel: False #Si se quiere los filtros triangulares de area 1 normMel = True, sino son de altura 1
+freclow: 0
+frechigh: 22050 # fs/2
+nfft: 0 # si es 0 se calcula la potencia de 2 mas cercana por arriba a el largo de la ventana en muestras
+CantArchMel: 60
+
+######### PARAMETROS DE SPL ###########
+
+calcSPL: True # Si se desea calcular SPL
+cant_SPL: 60 # Cantidad de puntos de SPL a tomar
+CantArchSPL: 60
+
+
+
+
+
+ 
