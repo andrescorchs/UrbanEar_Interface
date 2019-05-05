@@ -196,7 +196,6 @@ class Urbanear():
             messagebox.showerror("Error", "Imposible de conectar con el dispositivo.")
             return
         seguro = messagebox.askyesno("Reinicio","¿Seguro que desea reiniciar el nodo?")
-        #messagebox.askretrycancel("Title","Installation failed, try again?")
         if seguro:
             command("sudo reboot", datos)
 
@@ -209,10 +208,35 @@ class Urbanear():
         else:
             global datos_w
             datos = datos_w
-        response = os.system("ping -c 3 " + datos['hostname'] + " > /dev/null")
-        if response != 0:
-            messagebox.showerror("Error", "Imposible de conectar con el dispositivo.")
-            return
+#        response = os.system("ping -c 3 " + datos['hostname'] + " > /dev/null")
+#        if response != 0:
+#            messagebox.showerror("Error", "Imposible de conectar con el dispositivo.")
+#            return
+        setear = messagebox.askyesno("Consulta", "El servidor consulta cada " + str(SERVER_TIME) + " segundos. Esta de acuerdo?" )
+        if not setear:
+            self.timer = Toplevel()
+            self.timer.geometry('300x150')
+            self.timer.resizable(0,0)
+            self.timer.configure(bg='white')
+            self.timer.title('Tiempo de consulta')
+            self.time = IntVar(value=SERVER_TIME)
+
+            self.timer.etiq = ttk.Label(self.timer,
+                               text="Ingrese el nuevo intervalo de consulta\n en segundos:", justify=CENTER)
+            self.timer.tiempo = ttk.Entry(self.timer, textvariable=self.time,
+                              width=10, justify=CENTER)
+            self.timer.b = ttk.Button(self.timer, text='Aplicar',
+                               command=self.aplicar_tiempo)
+            self.timer.etiq.pack(side=TOP, fill=X, expand=True,
+                            padx=25, pady=5)
+            self.timer.tiempo.pack(side=TOP, fill=X, expand=True,
+                            padx=25, pady=5)
+            self.timer.b.pack(side=TOP, fill=X, expand=True,
+                            padx=25, pady=5)
+            self.timer.transient(master=self.raiz)
+            self.timer.grab_set()
+            self.raiz.wait_window(self.timer)
+
         global server
         server = Timer(SERVER_TIME, getFiles)
         server.start()
@@ -221,6 +245,15 @@ class Urbanear():
         messagebox.showinfo("Info", "El servidor fue iniciado.")
         self.message.set("Servidor iniciado")
         self.barraest.config(text=self.message.get())
+
+    def aplicar_tiempo(self):
+        aux = self.time.get()
+        if aux == None or aux <= 0:
+            messagebox.showerror("Error", "Debe ingresarse un entero positivo")
+        else:
+            global SERVER_TIME
+            SERVER_TIME = aux
+        self.timer.destroy()
 
     def stopServer(self):
         global server
